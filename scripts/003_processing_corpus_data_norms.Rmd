@@ -1,0 +1,378 @@
+---
+title: "Hierarchy Experiment: Statistical model"
+author: "Bodo Winter (statistical analysis)"
+date: "7/17/2019"
+output: html_document
+---
+
+## Introduction
+
+This is the statistical analysis of our "hierarchy experiment", a replication-extension of Schubert's (2005) study which associates vertical positions with power. The present study includes the added dimension of gender.
+
+This script takes the fitted Bayesian models and interprets them:
+
+## Preprocessing
+
+Load stuff:
+
+```{r, message = FALSE}
+# Packages:
+
+library(tidyverse)
+library(brms)
+
+# ggplot2 theme:
+
+source('timo_theme.R')
+```
+
+## Get the corpus data in:
+
+Set working directory to where corpus data is:
+
+```{r}
+setwd('../data/corpus_data')
+```
+
+Get the file names:
+
+```{r}
+all_files <- list.files()
+```
+
+Loop through and load them in:
+
+```{r, message = FALSE}
+all_profs <- c()
+for (i in seq_along(all_files)) {
+  this_file <- read_csv(all_files[i])
+  this_file$FileName <- all_files[i]
+  all_profs <- bind_rows(all_profs, this_file)
+}
+all_profs %>% print(n = 2, width = Inf)
+```
+
+Reset working directory to scripts folder:
+
+```{r}
+setwd('../../scripts')
+```
+
+Get rid of those empty columns:
+
+```{r}
+all_profs <- select(all_profs, `Record#`:FileName)
+```
+
+Change ugly first column name:
+
+```{r}
+all_profs <- rename(all_profs, ID = `Record#`)
+```
+
+Change file names to professions:
+
+```{r}
+all_profs <- mutate(all_profs,
+                    Profession = str_split(FileName, '.csv', simplify = TRUE)[, 1],
+                    Profession = str_to_lower(Profession))
+```
+
+First let's do some general checks:
+
+```{r}
+all(filter(all_profs, Tagging == 'm')$Male == 1)
+all(filter(all_profs, Tagging == 'f')$Female == 1)
+all(filter(all_profs, Tagging == 'd')$Disregarded == 1)
+all(filter(all_profs, Tagging == 'u')$Unknown == 1)
+```
+
+Fix the one disregarded NA:
+
+```{r}
+row_id <- which(is.na(all_profs$Disregarded) & all_profs$Tagging == 'd')
+all_profs[row_id, ]$Disregarded <- 1
+rm(row_id)
+```
+
+Check:
+
+```{r}
+all(filter(all_profs, Tagging == 'd')$Disregarded == 1)
+```
+
+The way things have been coded is that the concordances are in the .csv files, and those where "Tagging" is an NA are the ones that aren't coded. So these should be excluded:
+
+```{r}
+all_profs <- filter(all_profs, !is.na(Tagging))
+```
+
+
+## Process the corpus data:
+
+Check the number of data points per profession:
+
+```{r}
+all_profs %>% count(Profession, sort = TRUE) %>% 
+  print(n = Inf)
+```
+
+The reason why there's so much for general and pilot is that there are lots of 'd' for disregarded.
+
+Let's get the number of male, female and unknown:
+
+```{r}
+prof_counts <- all_profs %>% count(Profession, Tagging) %>% 
+  spread(Tagging, n, fill = 0) %>% 
+  mutate(M_or_F = m + f) %>% 
+  arrange(desc(M_or_F))
+prof_counts %>% print(n = Inf)
+```
+
+Create a male to female ratio. For this, +1 is added to both terms to avoid undefined ratios:
+
+```{r}
+prof_counts <- prof_counts %>% 
+  mutate(MF_ratio = (m + 1) / (f + 1)) %>% 
+  arrange(desc(MF_ratio))
+prof_counts %>% print(n = Inf)
+```
+
+Values > 1 have more male mentions, values < 1 have more female mentions. As seen, there are more male-dominated professions overall. Those that are female-dominated include professions such as flight attendant and dance instructor.
+
+Since almost all 0's are in the female category, forming a female-to-male ratio may make more sense since 0:1 is defined whereas 1:0 is not (if expressed as a fraction). For this, no smoothing is needed:
+
+```{r}
+prof_counts <- prof_counts %>% 
+  mutate(FM_ratio = f / m) %>% 
+  arrange(desc(FM_ratio))
+prof_counts %>% print(n = Inf)
+```
+
+How do these correlate?
+
+```{r}
+with(filter(prof_counts, !is.infinite(FM_ratio)), cor(MF_ratio, FM_ratio, use = 'complete.obs'))
+```
+
+Calculate weights. These may be used in a regression to adjust for the overall number. We should be more uncertain about those ratios for which we have only very few male and male mentions overall. This can be done via regression weights.
+
+```{r}
+prof_counts <- mutate(prof_counts,
+                      Weights = M_or_F / max(M_or_F))
+```
+
+Write this to a file:
+
+```{r}
+write_csv(prof_counts, '../data/profession_corpus_counts.csv')
+```
+
+
+## Load item data:
+
+Load experiment data:
+
+```{r}
+power <- read_csv('../data/hierarchy_experiment_cleaned.csv')
+```
+
+Extract pair names and professions:
+
+```{r}
+items <- power %>% select(HighPosition, LowPosition, PairName) %>%
+  filter(!duplicated(PairName))
+```
+
+Merge this with the corpus file:
+
+```{r}
+items$PowerfulM <- prof_counts[match(items$HighPosition, prof_counts$Profession), ]$m
+items$PowerlessM <- prof_counts[match(items$LowPosition, prof_counts$Profession), ]$m
+items$PowerfulF <- prof_counts[match(items$HighPosition, prof_counts$Profession), ]$f
+items$PowerlessF <- prof_counts[match(items$LowPosition, prof_counts$Profession), ]$f
+items$HighRatio <- prof_counts[match(items$HighPosition, prof_counts$Profession), ]$MF_ratio
+items$LowRatio <- prof_counts[match(items$LowPosition, prof_counts$Profession), ]$MF_ratio
+```
+
+Get the ratio of ratios:
+
+```{r}
+items <- mutate(items,
+                DoubleRatio = HighRatio / LowRatio,
+                RatioDiff = HighRatio - LowRatio)
+```
+
+This is the extent to which the powerful profession is male-dominated (> 1) or female-dominated (< 1). If both the powerful and the powerless position are male-dominated, the score will be close to 1.0, and the same for if both positions are female-dominated.
+
+Write this to file:
+
+```{r}
+write_csv(items, '../data/item_corpus.csiv')
+```
+
+## Merge with Milinsky et al. (2014) norms:
+
+Load the milinsky norms:
+
+```{r}
+norms <- read_csv('../data/item_to_misersky_2014_norm_match.csv')
+norms %>% print(n = Inf)
+```
+
+For how many was there no match?
+
+```{r}
+norms %>% count(is.na(M)) %>% mutate(prop = round(n / sum(n), 2))
+```
+
+78% could be matched. A total of 14 could not be matched.
+
+Put the M/F values for that profession in there:
+
+```{r}
+prof_counts <- left_join(prof_counts, norms)
+```
+
+Make the gender norms to be on the same scale:
+
+```{r}
+prof_counts <- mutate(prof_counts,
+                      M = 1 - M)
+```
+
+Make the ratio log-transformed:
+
+```{r}
+prof_counts <- mutate(prof_counts,
+                      LogRatio = log10(MF_ratio),
+                      LogFMRatio = log10(FM_ratio))
+```
+
+Check this correlation, first male/female ratio (smoothed with + 1):
+
+```{r}
+prof_counts %>%
+  ggplot(aes(x = LogRatio, y = M, label = Profession)) +
+  geom_point(col = 'red', size = 2) +
+  geom_smooth(col = 'black', fill = 'peachpuff3') +
+  geom_text_repel(size = 4, force = 11) +
+  theme_bham_stats +
+  geom_vline(xintercept = 0, linetype = 2, size = 1.25) +
+  geom_hline(yintercept = 0.5, linetype = 2, size = 1.25) +
+  theme_bham_stats +
+  ylab('Male/female ratio based on perceptual judgments\n') +
+  xlab('\nMale/female ratio based on text mentions (log10)') +
+  theme(plot.title = element_text(face = 'bold', size = 20, hjust = 0.5),
+        axis.title = element_text(face = 'bold', size = 20),
+        axis.text.x = element_text(face = 'bold', size = 16),
+        axis.text.y = element_text(face = 'bold', size = 12),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank()) +
+  coord_cartesian(xlim = c(-1, 2))
+ggsave('../figures/figure1_male_female_ratio.png', width = 14, height = 8)
+```
+
+And the female/male ratio (where no adding + 1 was needed):
+
+
+```{r}
+prof_counts %>%
+  ggplot(aes(x = LogFMRatio, y = M, label = Profession)) +
+  geom_point(col = 'red', size = 2) +
+  geom_smooth(col = 'black', fill = 'peachpuff3') +
+  geom_text_repel(size = 4, force = 11) +
+  theme_bham_stats +
+  geom_vline(xintercept = 0, linetype = 2, size = 1.25) +
+  geom_hline(yintercept = 0.5, linetype = 2, size = 1.25) +
+  theme_bham_stats +
+  ylab('Male/female ratio based on perceptual judgments\n') +
+  xlab('\nMale/female ratio based on text mentions (log10)') +
+  theme(plot.title = element_text(face = 'bold', size = 20, hjust = 0.5),
+        axis.title = element_text(face = 'bold', size = 20),
+        axis.text.x = element_text(face = 'bold', size = 16),
+        axis.text.y = element_text(face = 'bold', size = 12),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank()) +
+  coord_cartesian(xlim = c(-3, 1))
+ggsave('../figures/figure1_female_male_ratio.png', width = 14, height = 8)
+```
+
+The female to male ratio creates artifacts due to 0. It makes more sense to use the +1 "smoothed" male to female ratio even though this has a slight distorting effect.
+
+
+## Perform a correlation analysis of this, and then a quadratic model:
+
+Simple correlation coefficient to check:
+
+```{r}
+with(prof_counts, cor(M, MF_ratio, use = 'complete.obs'))
+with(prof_counts, cor(M, LogRatio, use = 'complete.obs'))
+```
+
+The correlation is much stronger with the logarithm of the ratio.
+
+First, z-transform both the response and the dependent variable so that the slope of the corresponding Bayesian regression model becomes Pearson's correlation coefficient.
+
+```{r}
+prof_counts <- mutate(prof_counts,
+                      LogRatio_z = LogRatio - mean(LogRatio, na.rm = TRUE),
+                      LogRatio_z = LogRatio_z / sd(LogRatio_z, na.rm = TRUE),
+                      M_z = M - mean(M, na.rm = TRUE),
+                      M_z = M_z / sd(M_z, na.rm = TRUE))
+```
+
+Set the prior:
+
+```{r}
+my_priors <- c(prior(normal(0, 0.5), class = b))
+```
+
+Run the Bayesian regressions for correlations (without intercept since everything's centered):
+
+```{r}
+corpus_correlation <- brm(M_z ~ -1 + LogRatio_z,
+                          data = prof_counts, prior = my_priors,
+                          init = 0, seed = 42)
+```
+
+Summarize this model:
+
+```{r}
+summary(corpus_correlation)
+```
+
+Posterior probability of the regression being positive:
+
+```{r}
+posts <- posterior_samples(corpus_correlation)
+sum(posts$b_LogRatio_z > 0) / nrow(posts)
+```
+
+
+Build a quadratic model of this:
+
+```{r}
+corpus_c2 <- brm(M ~ LogRatio_z + I(LogRatio_z ^ 2),
+                 data = prof_counts, prior = my_priors,
+                 init = 0, seed = 2)
+```
+
+Summarize this:
+
+```{r}
+summary(corpus_c2)
+```
+
+Posterior probabilities:
+
+```{r}
+posts <- posterior_samples(corpus_c2)
+sum(posts$b_LogRatio_z > 0) / nrow(posts)
+sum(posts$b_ILogRatio_zE2 < 0) / nrow(posts)
+```
+
+This completes this analysis.
+
+
+

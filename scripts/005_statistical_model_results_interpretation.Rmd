@@ -1,0 +1,519 @@
+---
+title: "Hierarchy Experiment: Statistical model"
+author: "Bodo Winter (statistical analysis)"
+date: "7/17/2019"
+output: html_document
+---
+
+## Introduction
+
+This is the statistical analysis of our "hierarchy experiment", a replication-extension of Schubert's (2005) study which associates vertical positions with power. The present study includes the added dimension of gender.
+
+This script takes the fitted Bayesian models and interprets them:
+
+## Preprocessing
+
+Load stuff:
+
+```{r, message = FALSE}
+# Packages:
+
+library(tidyverse)
+library(brms)
+library(ggrepel)
+
+# ggplot2 theme:
+
+source('timo_theme.R')
+```
+
+## Load the model:
+
+Load the main model that is fitted by the file "bayes_model_estimation.R":
+
+```{r}
+load('main_mdl.RData')
+```
+
+## Summarize the model:
+
+```{r}
+summary(main_mdl)
+```
+
+Reminder of deviation coding scheme:
+
+* subject gender: female = -0.5, male = +0.5
+* task: powerless = -0.5, powerful = +0.5
+* hierarchy: powerful + down = -0.5, powerful + up = +0.5
+* gender: male + down = -0.5, male + up = +0.5
+
+## Posterior probabilities:
+
+Calculate the posterior probabilities of the respective effects. First, extract posteriors:
+
+```{r}
+p <- posterior_samples(main_mdl)
+
+subjGender <- p$'b_SubjGender1'
+task <- p$'b_Task1'
+hierarchy <- p$'b_Hierarchy1'
+gender <- p$'b_Gender1'
+hierarchy_gender <- p$'b_Hierarchy1:Gender1'
+subjGender_hierarchy <- p$'b_SubjGender1:Hierarchy1'
+subjGender_Gender <- p$'b_SubjGender1:Gender1'
+task_gender <- p$'b_Task1:Gender1'
+task_hierarchy <- p$'b_Task1:Hierarchy1'
+threeway <- p$'b_SubjGender1:Hierarchy1:Gender1'
+```
+
+Calculate posterior probabilities:
+
+```{r}
+# Subject effect:
+
+sum(subjGender < 0) / nrow(p)
+
+# Task effect:
+
+sum(task < 0) / nrow(p)
+
+# Gender effect:
+
+sum(gender < 0) / nrow(p)
+
+# Hierarchy effect:
+
+sum(hierarchy < 0) / nrow(p)
+
+# Hierarchy * task interaction:
+
+sum(task_hierarchy < 0) / nrow(p)
+
+# Task * gender interaction:
+
+sum(task_gender < 0) / nrow(p)
+
+# Hierarchy * gender interaction:
+
+sum(hierarchy_gender < 0) / nrow(p)
+
+# Subject gender * hierarchy interaction:
+
+sum(subjGender_hierarchy< 0) / nrow(p)
+
+# Subject gender * gender interaction:
+
+sum(subjGender_Gender < 0) / nrow(p)
+
+# Threeway interaction:
+
+sum(threeway < 0) / nrow(p)
+```
+
+## Plot the marginal effects:
+
+Plot the marginal effects, task:
+
+```{r, fig.width = 8, fig.height = 6}
+
+marginal_effects(main_mdl, 'Task')
+```
+
+Plot the marginal effects, gender:
+
+```{r, fig.width = 8, fig.height = 6}
+
+marginal_effects(main_mdl, 'Gender')
+```
+
+Plot the marginal effects, hierarchy:
+
+```{r, fig.width = 8, fig.height = 6}
+
+marginal_effects(main_mdl, 'Hierarchy')
+```
+
+Hierarchy * gender interaction:
+
+```{r, fig.width = 8, fig.height = 6}
+
+marginal_effects(main_mdl, 'Gender:Hierarchy')
+```
+
+Task * hierearchy interaction:
+
+```{r, fig.width = 8, fig.height = 6}
+task_hierarchy <- marginal_effects(main_mdl, 'Task:Hierarchy')
+plot(task_hierarchy)
+```
+
+Three-way interaction:
+
+```{r, fig.width = 8, fig.height = 6}
+
+conditions <- tibble(SubjGender = factor(c('female', 'male')))
+
+interaction_preds <- marginal_effects(main_mdl, 'Gender:Hierarchy',
+                 conditions = conditions)
+
+plot(interaction_preds)
+```
+
+## Publication-ready plot of the marginal effects:
+
+Extract the relevant data frames:
+
+```{r}
+task_hierarchy <- task_hierarchy$`Task:Hierarchy`
+interaction_preds <- interaction_preds$`Gender:Hierarchy`
+```
+
+Plot the task * hierarchy results:
+
+```{r}
+p1 <- task_hierarchy %>%
+  mutate(Hierarchy = ifelse(Hierarchy == 'BottomPower', 'power = down', 'power = up'),
+         Task = ifelse(Task == 'powerful', 'more powerful?', 'less powerful?')) %>% 
+  ggplot(aes(x = Hierarchy, col = Hierarchy, y = estimate__))
+p1 + geom_errorbar(aes(ymin = lower__, ymax = upper__), size = 1.25, width = 0.1) + 
+  geom_point(size = 6, pch = 15) +
+  facet_wrap(~Task) + 
+  theme_bham_stats +
+  labs(title = 'Task * Hierarchy Condition interaction\n') +
+  ylab('Predicted log response time\n') +
+  xlab('\nHierarchy Condition') +
+  theme(plot.title = element_text(face = 'bold', size = 20, hjust = 0.5),
+        axis.title = element_text(face = 'bold', size = 20),
+        axis.text.x = element_text(face = 'bold', size = 16),
+        axis.text.y = element_text(face = 'bold', size = 12),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank(),
+        legend.position = 'top') +
+  scale_color_viridis_d(option = 'D', direction = -1, begin = 0.1, end = 0.7)
+ggsave('../figures/figure2.png', width = 10, height = 7)
+```
+
+Plot the subject / hierarchy / gender interaction:
+
+```{r}
+p2 <- interaction_preds %>%
+  mutate(Hierarchy = ifelse(Hierarchy == 'BottomPower', 'power = down', 'power = up'),
+         Task = ifelse(Task == 'powerful', 'more powerful?', 'less powerful?'),
+         Gender = ifelse(Gender == 'FemaleTop', 'female = up', 'male = up')) %>% 
+  ggplot(aes(x = Gender, col = Hierarchy, y = estimate__))
+p2 + geom_errorbar(aes(ymin = lower__, ymax = upper__), size = 1.25, width = 0.1,
+                   position = position_dodge(width = 0.3)) + 
+  geom_point(size = 6, pch = 15, position = position_dodge(width = 0.3)) +
+  facet_wrap(~SubjGender) + 
+  theme_bham_stats +
+  labs(title = 'Gender Condition * Hierarchy Coondition * Participant Gender interaction\n') +
+  ylab('Predicted log response time\n') +
+  xlab('\nGender Condition') +
+  theme(plot.title = element_text(face = 'bold', size = 20, hjust = 0.5),
+        axis.title = element_text(face = 'bold', size = 20),
+        axis.text.x = element_text(face = 'bold', size = 16),
+        axis.text.y = element_text(face = 'bold', size = 12),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank(),
+        legend.position = 'top') +
+  scale_color_viridis_d(option = 'D', direction = -1, begin = 0.1, end = 0.7)
+ggsave('../figures/figure3.png', width = 10, height = 7)
+```
+
+
+
+## Extract the random effects coefficients for items:
+
+Get the PairName df out this object with all the estimates:
+
+```{r}
+pairs <- coef(main_mdl)$PairName
+pairs <- pairs[, 1, 1:11]
+head(pairs)
+```
+
+Extract the relevant random effects estimates:
+
+```{r}
+gender_coefs <- pairs[, 'Gender1']
+hierarchy_coefs <- pairs[, 'Hierarchy1']
+gender_interact_coefs <- pairs[, 'Hierarchy1:Gender1']
+gender_interact_coefs <- pairs[, 'Hierarchy1:Gender1']
+```
+
+Make them into tidy data frames:
+
+```{r}
+gender_coefs <- tibble(GenderCoef = gender_coefs,
+                       Pair = names(gender_coefs))
+hierarchy_coefs <- tibble(HierarchyCoef = hierarchy_coefs,
+                          Pair = names(hierarchy_coefs))
+interact_coefs <- tibble(InteractionCoef = gender_interact_coefs,
+                         Pair = names(gender_interact_coefs))
+```
+
+Plot them. First the gender coefficients:
+
+```{r, fig.width = 12, fig.height = 6}
+gender_coefs %>% ggplot(aes(x = reorder(Pair, GenderCoef),
+                            y = GenderCoef)) +
+  geom_col(fill = 'peachpuff3') + theme_bham_stats +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(title = 'By-item gender coefficients') +
+  xlab('')
+```
+
+Plot them. Next the hierarchy coefficients:
+
+```{r, fig.width = 12, fig.height = 6}
+hierarchy_coefs %>% ggplot(aes(x = reorder(Pair, HierarchyCoef),
+                            y = HierarchyCoef)) +
+  geom_col(fill = 'peachpuff3') + theme_bham_stats +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(title = 'By-item hierarchy coefficients') +
+  xlab('')
+```
+
+Plot them. Next the hierarchy * gender interaction coefficients:
+
+```{r, fig.width = 12, fig.height = 6}
+interact_coefs %>% ggplot(aes(x = reorder(Pair, InteractionCoef),
+                            y = InteractionCoef)) +
+  geom_col(fill = 'peachpuff3') + theme_bham_stats +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(title = 'By-item hierarchy * gender coefficients') +
+  xlab('')
+```
+
+## Merge this with corpus data
+
+Load the corpus data:
+
+```{r, message = FALSE}
+items <- read_csv('../data/item_corpus.csv')
+```
+
+Create the log-transformed ratio measure:
+
+```{r}
+items <- mutate(items,
+                LogMF_Power = log10((PowerfulM + 1) / (PowerfulF + 1)),
+                LogMF_Powerless = log10((PowerlessM + 1) / (PowerlessF + 1)),
+                LogRatio = LogMF_Power / LogMF_Powerless)
+```
+
+
+Rename the pair clumn so that it matches the coefficient data frames:
+
+```{r}
+items <- rename(items,
+                Pair = PairName)
+```
+
+Merge:
+
+```{r}
+gender_coefs <- left_join(gender_coefs, items)
+hierarchy_coefs <- left_join(hierarchy_coefs, items)
+interact_coefs <- left_join(interact_coefs, items)
+```
+
+## Correlations, ratio difference (M/F ratio of powerful - M/F ratio of powerless):
+
+Look at correlations, with by-participant hierarchy slopes with the ratio difference score:
+
+```{r, fig.width = 8, fig.height = 6}
+hierarchy_coefs %>% 
+  ggplot(aes(x = RatioDiff,
+                            y = HierarchyCoef)) +
+  geom_point(size = 2) +
+  geom_smooth(method = 'lm') +
+  theme_bham_stats
+```
+
+Next, correlations with by-participant gender slopes:
+
+```{r, fig.width = 8, fig.height = 6}
+gender_coefs %>% 
+  ggplot(aes(x = RatioDiff,
+                            y = GenderCoef)) +
+  geom_point(size = 2) +
+  geom_smooth(method = 'lm') +
+  theme_bham_stats
+```
+
+Finally, interaction:
+
+```{r, fig.width = 8, fig.height = 6}
+interact_coefs %>% 
+  ggplot(aes(x = RatioDiff,
+                            y = InteractionCoef)) +
+  geom_point(size = 2) +
+  geom_smooth(method = 'lm') +
+  theme_bham_stats
+```
+
+Get the correlation coefficients for the ratio difference score:
+
+```{r}
+with(gender_coefs, cor(RatioDiff, GenderCoef))
+with(hierarchy_coefs, cor(RatioDiff, HierarchyCoef))
+with(interact_coefs, cor(RatioDiff, InteractionCoef))
+```
+
+## Correlations, ratio of ratis (M/F ratio of powerful / M/F ratio of powerless):
+
+Look at correlations, with by-participant hierarchy slopes with the ratio of ratio score. Since there's a really extreme ratio, for plotting purposes this is excluded:
+
+```{r, fig.width = 8, fig.height = 6}
+hierarchy_coefs %>% 
+  filter(DoubleRatio < 200) %>% 
+  ggplot(aes(x = DoubleRatio,
+                            y = HierarchyCoef)) +
+  geom_point(size = 2) +
+  geom_smooth(method = 'lm') +
+  theme_bham_stats
+```
+
+Next, correlations with by-participant gender slopes:
+
+```{r, fig.width = 8, fig.height = 6}
+gender_coefs %>% 
+  filter(DoubleRatio < 200) %>% 
+  ggplot(aes(x = DoubleRatio,
+                            y = GenderCoef)) +
+  geom_point(size = 2) +
+  geom_smooth(method = 'lm') +
+  theme_bham_stats
+```
+
+Finally, interaction, and make this a publication-ready plot:
+
+```{r, fig.width = 8, fig.height = 6}
+interact_coefs %>% 
+  mutate(Pair = str_replace_all(Pair, '_', ' '),
+         Pair = str_replace_all(Pair, ':', '/')) %>% 
+  filter(DoubleRatio < 200) %>% 
+  ggplot(aes(x = DoubleRatio,
+                            y = InteractionCoef,
+             label = Pair)) +
+  coord_cartesian(xlim = c(-4, 22)) +
+  geom_smooth(method = 'lm', col = 'black', fill = 'peachpuff3') +
+  geom_point(col = 'red', size = 2) +
+  geom_text_repel(size = 4, force = 11) +
+  geom_vline(xintercept = 1, linetype = 2, size = 2) +
+  theme_bham_stats +
+  labs(title = 'By-item Hierarchy * Gender interaction coefficients\nas a function of corpus-based language bias\n') +
+  ylab('Hierarchy * Gender coefficient\n') +
+  xlab('\nGender asymmetry: Male/female ratio for powerful divided by\nmale/female ratio for powerless') +
+  theme(plot.title = element_text(face = 'bold', size = 20, hjust = 0.5),
+        axis.title = element_text(face = 'bold', size = 20),
+        axis.text.x = element_text(face = 'bold', size = 16),
+        axis.text.y = element_text(face = 'bold', size = 12),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank())
+ggsave('../figures/figure4.png', width = 14, height = 8)
+```
+
+## Perform correlations with random slopes
+
+Get the correlation coefficients for the ratio difference score. With the high-leverage point:
+
+```{r}
+with(gender_coefs, cor(DoubleRatio, GenderCoef))
+with(hierarchy_coefs, cor(DoubleRatio, HierarchyCoef))
+with(interact_coefs, cor(DoubleRatio, InteractionCoef))
+```
+
+... without the high-leverage point:
+
+```{r}
+with(filter(gender_coefs, DoubleRatio < 200), cor(DoubleRatio, GenderCoef))
+with(filter(hierarchy_coefs, DoubleRatio < 200), cor(DoubleRatio, HierarchyCoef))
+with(filter(interact_coefs, DoubleRatio < 200), cor(DoubleRatio, InteractionCoef))
+```
+
+## Estimate uncertainty in these correlations with Bayesian regression models:
+
+Z-transform both predictor and response to make the regression model equal to a correlation. Also run this without the influential point (similar results are obtained if it's included, as the correlations above show).
+
+```{r}
+gender_z <- gender_coefs %>% 
+  # filter(DoubleRatio < 200) %>% 
+  mutate(Ratio_z = DoubleRatio - mean(DoubleRatio),
+         Ratio_z = Ratio_z / sd(Ratio_z),
+         Gender_z = GenderCoef - mean(GenderCoef),
+         Gender_z = Gender_z / sd(Gender_z))
+
+hierarchy_z <- hierarchy_coefs %>% 
+  # filter(DoubleRatio < 200) %>% 
+  mutate(Ratio_z = DoubleRatio - mean(DoubleRatio),
+         Ratio_z = Ratio_z / sd(Ratio_z),
+         Hierarchy_z = HierarchyCoef - mean(HierarchyCoef),
+         Hierarchy_z = Hierarchy_z / sd(Hierarchy_z))
+
+interact_z <- interact_coefs %>% 
+  # filter(DoubleRatio < 200) %>% 
+  mutate(Ratio_z = DoubleRatio - mean(DoubleRatio),
+         Ratio_z = Ratio_z / sd(Ratio_z),
+         Inter_z = InteractionCoef - mean(InteractionCoef),
+         Inter_z = Inter_z / sd(Inter_z))
+```
+
+Set the prior:
+
+```{r}
+my_priors <- c(prior(normal(0, 0.5), class = b))
+```
+
+Run the Bayesian regressions for correlations (without intercept since everything's centered).
+
+For this analysis, the extremely high double ratio coefficient is dropped. The main result (hierarchy * condition coefficient ~ asymmetry correlation) is supported regardless of whether this value is included or not.
+
+```{r, message = FALSE}
+gender_brm <- brm(Gender_z ~ -1 + Ratio_z,
+                  data = filter(gender_z, DoubleRatio < 200), prior = my_priors,
+                  init = 0, seed = 42)
+```
+
+Hierarchy correlation:
+
+```{r, message = FALSE}
+hierarchy_brm <- brm(Hierarchy_z ~ -1 + Ratio_z,
+                  data = filter(hierarchy_z, DoubleRatio < 200), prior = my_priors,
+                  init = 0, seed = 42)
+```
+
+Interaction correlation:
+
+```{r, message = FALSE}
+interact_brm <- brm(Inter_z ~ -1 + Ratio_z,
+                  data = interact_z, prior = my_priors,
+                  init = 0, seed = 42)
+```
+
+Look at the output:
+
+```{r}
+summary(gender_brm)
+summary(hierarchy_brm)
+summary(interact_brm)
+```
+
+Marginal effects:
+
+```{r}
+marginal_effects(interact_brm, 'Ratio_z')
+```
+
+Posterior probability:
+
+```{r}
+sum(posterior_samples(interact_brm)$b_Ratio_z < 0) / nrow(posterior_samples(interact_brm))
+```
+
+
+This completes this analysis.
+
+

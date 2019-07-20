@@ -1,0 +1,525 @@
+---
+title: "Hierarchy Experiment: Preprocessing"
+author: "Bodo Winter (statistical analysis)"
+date: "7/17/2019"
+output: html_document
+---
+
+## Introduction
+
+This is the statistical analysis of our "hierarchy experiment", a replication-extension of Schubert's (2005) study which associates vertical positions with power. The present study includes the added dimension of gender.
+
+This script does all the preprocessing and gets the data in shape for the analysis.
+
+## Preprocessing
+
+Load stuff:
+
+```{r, message = FALSE}
+# Packages:
+
+library(tidyverse)
+
+# Data:
+
+power <- read_csv('data/hierarchy_experiment.csv')
+
+# ggplot2 theme:
+
+source('timo_theme.R')
+```
+
+Get rid of unwanted columns:
+
+```{r}
+power <- power %>%
+  select(-(Session:ExperimentVersion),
+         -Group, -RandomSeed,
+         -(RandomSeed:Block),
+         -(list1:list9),
+         -ComprehensionQuestion.RESP,
+         -ComprehensionQuestion.RT,
+         -(MainConditionTable:MainList),
+         -MainQuestion.RTTime,
+         -MainScreen.RTTime,
+         -(PracticeDisplayTime:Procedure),
+         -(QuestionDisplayTime:TopProfession))
+```
+
+Get rid of practice trials:
+
+```{r}
+power <- power %>%
+  filter(!is.na(MainScreen.RESP))
+```
+
+Rename columns:
+
+```{r}
+power <- power %>%
+  rename(Task = ExperimentName,
+         Subj = Subject,
+         SubjGender = Gender,
+         BottomProf = Bottomprofession,
+         Comp.RESP = MainQuestion.RESP,
+         Comp.RT = MainQuestion.RT,
+         Country = HomeCountry,
+         Language = NativeLanguage,
+         GenderCond = GenderCondition,
+         HierarchyCond = HierarchyCondition,
+         Resp = MainScreen.RESP,
+         RT = MainScreen.RT)
+```
+
+Rename content of all columns that contain responses:
+
+```{r}
+# Define helper function that transforms "{UPARROW}" to "up":
+
+up_function <- function(x) ifelse(x == '{UPARROW}',
+                                  'up', 'down')
+
+# Use this function to get the up responses:
+
+power <- power %>%
+  mutate(Comp.RESP = up_function(Comp.RESP),
+         Resp = up_function(Resp))
+
+# Get rid of the function again:
+
+rm(up_function)
+```
+
+Rename task column according to the following bits:
+
+* A = which one is more powerful?
+* B = which one is less powerful?
+
+```{r}
+# Define helper function:
+
+power <- power %>%
+  mutate(Task = ifelse(Task == 'professions_englishA',
+                       'powerful', 'powerless'))
+```
+
+Create a unique identifier for each subject:
+
+```{r}
+power <- power %>% 
+  mutate(Subj = gl(nrow(power) / 128, 128))
+```
+
+Log transform RTs:
+
+```{r}
+power <- power %>%
+  mutate(LogRT = log(RT),
+         LogComp.RT = ifelse(Comp.RT != 0, log(Comp.RT), NA))
+```
+
+Exclude non-native speakers:
+
+```{r}
+power <- power %>%
+	filter(str_detect(Language, '(e|E)nglish'),
+		Country != 'Hong Kong',
+		Country != 'Thailand')
+```
+
+Get rid of those columns (not needed now anymore):
+
+```{r}
+power <- power %>%
+  select(-Language, -Country)
+```
+
+## Processing comprehension questions
+
+Find correct repsonses to female question:
+
+```{r}
+# Define logical vectors with correct responses to female question:
+
+# Up:
+
+with(power,
+	female_up <<- Question == 'Was the female at the top or bottom?')
+
+with(power,
+	female_up <<- female_up & GenderCond == 'FemaleTop' & Comp.RESP == 'up')
+
+# Down:
+
+with(power,
+	female_down <<- Question == 'Was the female at the top or bottom?')
+
+with(power,
+	female_down <<- female_down & GenderCond == 'MaleTop' & Comp.RESP == 'down')
+
+# Combine:
+
+female_corr <- female_up | female_down
+
+# Define logical vectors with correct responses to male question:
+
+# Up:
+
+with(power,
+	male_up <<- Question == 'Was the male at the top or bottom?')
+
+with(power,
+	male_up <<- male_up & GenderCond == 'MaleTop' & Comp.RESP == 'up')
+
+# Down:
+
+with(power,
+	male_down <<- Question == 'Was the male at the top or bottom?')
+
+with(power,
+	male_down <<- male_down & GenderCond == 'FemaleTop' & Comp.RESP == 'down')
+
+# Combine:
+
+male_corr <- male_up | male_down
+```
+
+Combine and attach to data frame:
+
+```{r}
+comp_corrects <- female_corr | male_corr
+power$Comp.ACC <- comp_corrects
+```
+
+Clean up the helper vectors from my work space:
+
+```{r}
+rm(comp_corrects, male_corr,
+   female_corr, male_up, male_down,
+   female_up, female_down)
+```
+
+Get a dataframe of only the comprehension question responses:
+
+```{r}
+comps <- power %>%
+	filter(!is.na(Comp.ACC))
+```
+
+Check accuracies per subject:
+
+```{r}
+# Create tibble with averages:
+
+comp_avgs <- comps %>% group_by(Subj) %>%
+  summarize(CompACC = mean(Comp.ACC)) %>%
+	print(n = length(unique(power$Subj))) %>% 
+  arrange(CompACC)
+
+#  Print the tibble:
+
+comp_avgs %>%  print(n = Inf)
+```
+
+Subject 23 performed with 75% accuracy, and subjects 31 and 38 performed with 79% accuracy. Everybody else is above 80% correct on the comprehension questions.
+
+Check accuracies by nature of question:
+
+```{r}
+comps %>% group_by(GenderCond, Comp.RESP) %>%
+	summarize(ACC = mean(Comp.ACC))
+```
+
+There does not seem to be much of a difference between conditions, and certainly not even remotely an indication that there's an interaction.
+
+Now we can get rid of the question and question RT stuff:
+
+```{r}
+power <- power %>%
+  select(-Comp.RESP, -Comp.RT, -Question, -Comp.ACC)
+```
+
+## Trial-accuracy:
+
+In this section we look at the accuracy by trial — this is different from the accuracy for the comprehension question.
+
+First, define helper vectors: logical vectors with information about what is or isn't accurate.
+
+```{r}
+# For the "powerful" task:
+
+with(power,
+     powerful_correct <<- Task == 'powerful' &
+       Resp == 'up' &
+       HierarchyCond == 'TopPower')
+
+with(power,
+     powerful_correct <<- powerful_correct |
+       Task == 'powerful' &
+       Resp == 'down' &
+       HierarchyCond == 'BottomPower')
+
+# For the "powerless" task:
+
+with(power,
+     powerless_correct <<- Task == 'powerless' &
+       Resp == 'down' &
+       HierarchyCond == 'TopPower')
+
+with(power,
+     powerless_correct <<- powerless_correct |
+       Task == 'powerless' &
+       Resp == 'up' & HierarchyCond == 'BottomPower')
+```
+
+Add this to the dataframe as an accuracy column:
+
+```{r}
+power$ACC <- powerful_correct | powerless_correct
+```
+
+Clean up the helper vectors:
+
+```{r}
+rm(powerful_correct, powerless_correct)
+```
+
+Get the accuracy averages per subject:
+
+```{r}
+ACC_avgs <- power %>% group_by(Subj) %>% 
+  summarize(ACC = mean(ACC)) %>% 
+  arrange(ACC)
+
+ACC_avgs %>% print(n = Inf)
+```
+
+Subject 23 is at chance! Most other subjects are above 80% or close to 80%.
+
+## Look at response times:
+
+Make a graph of the RT distribution:
+
+```{r, fig.width = 10, fig.height = 4}
+power %>% ggplot(aes(x = RT)) + 
+  geom_density(fill = 'steelblue') +
+  theme_bham_stats
+```
+
+This is very skewed, with some values all the way up to 15000. Also notice the dip surrounding, which suggests there may be a subject who just clicked through the experiment.
+
+Compute RT by subject:
+
+```{r}
+RT_avgs <- power %>% group_by(Subj) %>%
+	summarize(RT = mean(RT)) %>% print(n = Inf)
+```
+
+Subject 23 is weird. This subject has <500ms responses, which seems to be impossible given that two words have to be read on the same screen.
+
+## Exclude obviously misbehaving subjects
+
+Let's merge this with the by-subject accuracies:
+
+```{r}
+subj_avgs <- left_join(comp_avgs, RT_avgs) %>% left_join(ACC_avgs)
+```
+
+So, there are definite (theory-independent) reasons to exclude subject 23, who had impossibly low RTs and was performing at chance.
+
+Exclude this subject:
+
+```{r}
+power <- power %>%
+  filter(Subj != 23)
+```
+
+## Exclude inaccurate trials
+
+How many inaccurates are there?
+
+```{r}
+# Raw numbers of inaccurates and accurates:
+
+table(power$ACC)
+
+# Percentage:
+
+str_c(round((1 - (sum(power$ACC) / nrow(power))) * 100, 1), '%')
+```
+
+Exclude inaccurates:
+
+```{r}
+power <- filter(power, ACC)
+
+# Check:
+
+nrow(power)
+```
+
+The number matches the number of "TRUE" responses above.
+
+## Exclude very slow responses (by-subject):
+
+Loop through the dataset by participants:
+
+```{r}
+# Vextor of subjects to loop through:
+
+these_subs <- unique(power$Subj)
+
+# Initialize empty data frame:
+
+new_df <- c()
+
+# Standard deviation cut-off value:
+
+sd_fac <- 2
+
+# Loop through subjects:
+
+for (i in seq_along(these_subs)) {
+  # Extract that subject:
+  
+	this_df <- filter(power, Subj == these_subs[i])
+	
+	# Save the log RTs of that subject:
+	
+	rts <- this_df$LogRT
+	
+	# Compute upper and lower bound for that subject:
+	
+	UB <- mean(rts) + sd_fac * sd(rts)
+	LB <- mean(rts) - sd_fac * sd(rts)
+	
+	# Get only those that are within bounds:
+	
+	this_df <- filter(this_df,
+	                  !(rts > UB | rts < LB))
+	
+	# Bind to empty data frame:
+	
+	new_df <- rbind(new_df, this_df)
+}
+
+# Remove helper objects:
+
+rm(i, LB, rts, these_subs, this_df, UB)
+```
+
+How many exclusions? Compare the size of the new data frame to the one of the old one:
+
+```{r}
+# Raw numbers:
+
+nrow(new_df)
+nrow(power)
+
+# Percentage:
+
+str_c(round((1 - (nrow(new_df) / nrow(power))) * 100, 1), '%')
+```
+
+Plot the distribution again:
+
+```{r, fig.width = 10, fig.height = 4}
+new_df %>% ggplot(aes(x = RT)) + 
+  geom_density(fill = 'steelblue') +
+  theme_bham_stats
+```
+
+What is the 95% quantile of this distribution?
+
+```{r}
+quantile(new_df$RT, 0.95)
+```
+
+Take this as a cut-off value:
+
+```{r}
+new_df <- filter(new_df, RT < quantile(RT, 0.95))
+```
+
+Plot the distribution again:
+
+```{r, fig.width = 10, fig.height = 4}
+new_df %>% ggplot(aes(x = RT)) + 
+  geom_density(fill = 'steelblue') +
+  theme_bham_stats
+```
+
+Compare this to the log-transformed distribution:
+
+```{r}
+new_df %>% ggplot(aes(x = LogRT)) + 
+  geom_density(fill = 'steelblue') +
+  theme_bham_stats
+```
+
+Override the original power data frame with this new one:
+
+```{r}
+power <- new_df
+```
+
+## Create additional condition identifiers
+
+Create an identifier that matches which gender is associated with power (e.g., "female doctor" = female powerful, "male doctor" = "male powerful").
+
+```{r}
+# Initialize column with 'female=powerful':
+
+power$GenderPower <- 'female=powerful'
+
+# Change those for which 'male=powerful':
+
+power[power$HierarchyCond == 'TopPower' & power$GenderCond == 'MaleTop', ]$GenderPower <- 'male=powerful'
+
+power[power$HierarchyCond == 'BottomPower' & power$GenderCond == 'FemaleTop', ]$GenderPower <- 'male=powerful'
+```
+
+Finally, create a "double match" variable, which follows the gender stereotype (men = more powerful) as well as the hierarchy condition, that is, male, powerful and on top.
+
+```{r}
+# Initialize empty column:
+
+power$DoubleMatch <- 'no match'
+
+# Override the correct ones:
+
+power[power$HierarchyCond == 'TopPower' & power$GenderCond == 'MaleTop', ]$DoubleMatch <- 'male powerful on top'
+```
+
+Whether the picked gender is female or male:
+
+```{r}
+# Initialize column with 'female':
+
+power$PickedGender <- 'female'
+
+# Take the ones where the 'male' was picked:
+
+power[power$Task == 'powerful' & power$HierarchyCond == 'TopPower' & power$GenderCond == 'MaleTop', ]$PickedGender <- 'male'
+
+power[power$Task == 'powerful' & power$HierarchyCond == 'BottomPower' & power$GenderCond == 'FemaleTop', ]$PickedGender <- 'male'
+
+power[power$Task == 'powerless' & power$HierarchyCond == 'BottomPower' & power$GenderCond == 'FemaleTop', ]$PickedGender <- 'male'
+
+power[power$Task == 'powerless' & power$HierarchyCond == 'TopPower' & power$GenderCond == 'MaleTop', ]$PickedGender <- 'male'
+
+```
+
+## Save file:
+
+Save the cleaned file outside of R:
+
+```{r}
+write_csv(power,
+          'data/hierarchy_experiment_cleaned.csv')
+```
+
+This completes this script.
+
+
+

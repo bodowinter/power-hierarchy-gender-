@@ -1,0 +1,378 @@
+---
+title: "Hierarchy Experiment: Descriptive statistics"
+author: "Bodo Winter (statistical analysis)"
+date: "7/17/2019"
+output: html_document
+---
+
+## Introduction
+
+This is the statistical analysis of our "hierarchy experiment", a replication-extension of Schubert's (2005) study which associates vertical positions with power. The present study includes the added dimension of gender.
+
+This script performs descriptive statistics and plotting.
+
+## Preprocessing
+
+Load stuff:
+
+```{r, message = FALSE}
+# Packages:
+
+library(tidyverse)
+library(gridExtra)
+
+# Data:
+
+power <- read_csv('data/hierarchy_experiment_cleaned.csv')
+
+# ggplot2 theme:
+
+source('timo_theme.R')
+```
+
+## Demographics to report
+
+Overall number of participants to report:
+
+```{r}
+length(unique(power$Subj))
+```
+
+Check gender composition:
+
+```{r}
+# Create a table with subject identifiers by gender:
+
+gender_tab <- table(power$Subj, power$SubjGender)
+
+# Check 0 counts to get number of genders:
+
+genders <- apply(gender_tab, 1, FUN = function(x) ifelse(x[1] == 0, 'male', 'female'))
+
+# How many each?
+
+table(genders)
+```
+
+## Compute averages:
+
+First, overall response times:
+
+```{r}
+power %>% summarize(M = round(mean(RT), 0),
+                    SD = round(sd(RT), 0))
+```
+
+Next by overall participant gender:
+
+```{r}
+power %>% group_by(SubjGender) %>% 
+  summarize(M = round(mean(RT), 0),
+            SD = round(sd(RT), 0))
+power %>% group_by(SubjGender) %>% 
+  summarize(M = round(mean(RT), 0)) %>%
+  pull() %>% diff()
+```
+
+Next by overall hierarchy condition:
+
+```{r}
+power %>% group_by(HierarchyCond) %>% 
+  summarize(M = round(mean(RT), 0),
+            SD = round(sd(RT), 0))
+power %>% group_by(HierarchyCond) %>% 
+  summarize(M = round(mean(RT), 0)) %>%
+  pull() %>% diff()
+```
+
+Slightly faster (~20ms) when bottom(!) is powerful.
+
+Next by gender condition:
+
+```{r}
+power %>% group_by(GenderCond) %>% 
+  summarize(M = round(mean(RT), 0),
+            SD = round(sd(RT), 0))
+power %>% group_by(GenderCond) %>% 
+  summarize(M = round(mean(RT), 0)) %>%
+  pull() %>% diff()
+```
+
+Slightly faster (~30ms) when the woman is on top.
+
+Next by gender and hierarchy condition:
+
+```{r}
+power %>% group_by(GenderCond, HierarchyCond) %>% 
+  summarize(M = round(mean(RT), 0),
+            SD = round(sd(RT), 0))
+```
+
+Looks like an interaction. When the woman is on top peple are SLOWER if the woman is also more powerful. When the man is on top, people are FASTER if the man is also more powerful. The slowest response times are obtained for when the man is on top but the more powerful position is female and at the bottom.
+
+Another way to look at these results is to focus on the one where the bottom position is the more powerful one (HierarchyCond = "BottomPower"). In that case, people are faster when the man is the more powerful.
+
+Another way to look at this, whether people find it overall easier/harder if male = powerful:
+
+```{r}
+power %>% group_by(GenderPower) %>% 
+  summarize(M = round(mean(RT), 0),
+            SD = round(sd(RT), 0))
+```
+
+People are faster in the male = powerful condition.
+
+Let's break this up by hierarchy condition (verticality):
+
+```{r}
+power %>% group_by(GenderPower, HierarchyCond) %>% 
+  summarize(M = round(mean(RT), 0),
+            SD = round(sd(RT), 0))
+```
+
+Let's break this up by task:
+
+```{r}
+power %>% group_by(Task) %>% 
+  summarize(M = round(mean(RT), 0),
+            SD = round(sd(RT), 0))
+power %>% group_by(Task) %>% 
+  summarize(M = round(mean(RT), 0)) %>%
+  pull() %>% diff()
+```
+
+People find it MUCH easier to pick the powerful one, by almost 500ms.
+
+Let's see whether the hierarchy condition interacts with Task:
+
+```{r}
+power %>% group_by(Task, HierarchyCond) %>% 
+  summarize(M = round(mean(RT), 0),
+            SD = round(sd(RT), 0))
+```
+
+When participants are picking the powerful one, they are faster with the bottom being at the powerful position. This goes against Schubert (2005). When participants are picking the powerless one, there is a slight effect in the predicted direction with the top = powerful being slightly faster.
+
+Let's look at task and gender:
+
+```{r}
+power %>% group_by(Task, GenderCond) %>% 
+  summarize(M = round(mean(RT), 0),
+            SD = round(sd(RT), 0))
+```
+
+Let's look at the double match variable:
+
+```{r}
+power %>% group_by(DoubleMatch) %>% 
+  summarize(M = round(mean(RT), 0),
+            SD = round(sd(RT), 0))  
+```
+
+Let's look at this as a function of task:
+
+```{r}
+power %>% group_by(Task, DoubleMatch) %>% 
+  summarize(M = round(mean(RT), 0),
+            SD = round(sd(RT), 0))
+```
+
+The effect goes into opposite directions based on task! If people have to select the powerless one, they are fast if the women are at the bottom. If they have to select the powerful one, they are SLOWER(!) if they pick the male on top.
+
+Let's break this up by participant gender:
+
+```{r}
+power %>% group_by(SubjGender, DoubleMatch) %>% 
+  summarize(M = round(mean(RT), 0),
+            SD = round(sd(RT), 0))
+```
+
+Massive difference where the male participants are showing a 100 ms drop if the men is powerful and on top!
+
+Are people overall faster when they have to pick the male response or when they have to pick the female response?
+
+```{r}
+power %>% group_by(PickedGender) %>% 
+  summarize(M = round(mean(RT), 0),
+            SD = round(sd(RT), 0))
+```
+
+Overall faster selecting the male.
+
+Does this differ by subject gender?
+
+```{r}
+power %>% group_by(SubjGender, PickedGender) %>% 
+  summarize(M = round(mean(RT), 0),
+            SD = round(sd(RT), 0))
+```
+
+The men are overall faster at picking the male response. The women have the same directional preference, but less pronounced.
+
+```{r}
+power %>% group_by(SubjGender,
+                   Task, PickedGender) %>% 
+  summarize(M = round(mean(RT), 0),
+            SD = round(sd(RT), 0))
+```
+
+How does the hierarchy effect depend on subject gender?
+
+```{r}
+power %>% group_by(SubjGender, HierarchyCond) %>% 
+  summarize(M = round(mean(RT), 0),
+            SD = round(sd(RT), 0))  
+```
+
+Men show the hierarchy effect, women don't!
+
+```{r}
+power %>% group_by(SubjGender, GenderCond) %>% 
+  summarize(M = round(mean(RT), 0),
+            SD = round(sd(RT), 0))  
+```
+
+## By-item averages:
+
+Look at how the gender effect differs by item:
+
+```{r, fig.width = 8, fig.height = 24}
+item_gender <- power %>%
+  group_by(PairName, GenderCond) %>% 
+  summarize(M = round(mean(RT), 0),
+            SD = round(sd(RT), 0))
+
+item_gender$Facet <- rep(str_c('Group', 1:4),
+                         each = 16)
+
+p1 <- item_gender %>% 
+  filter(Facet == 'Group1') %>% 
+  ggplot(aes(x = PairName,
+             fill = GenderCond, y = M)) +
+  geom_bar(stat = 'identity', position = 'dodge') + 
+  coord_flip(ylim = c(1500, 2000)) + 
+  theme_bham_stats +
+  theme(legend.position = 'top')
+p2 <- item_gender %>% 
+  filter(Facet == 'Group2') %>% 
+  ggplot(aes(x = PairName,
+             fill = GenderCond, y = M)) +
+  geom_bar(stat = 'identity', position = 'dodge') + 
+  coord_flip(ylim = c(1500, 2000)) + 
+  theme_bham_stats +
+  theme(legend.position = 'none')
+p3 <- item_gender %>% 
+  filter(Facet == 'Group3') %>% 
+  ggplot(aes(x = PairName,
+             fill = GenderCond, y = M)) +
+  geom_bar(stat = 'identity', position = 'dodge') + 
+  coord_flip(ylim = c(1500, 2000)) + 
+  theme_bham_stats +
+  theme(legend.position = 'none')
+p4 <- item_gender %>% 
+  filter(Facet == 'Group4') %>% 
+  ggplot(aes(x = PairName,
+             fill = GenderCond, y = M)) +
+  geom_bar(stat = 'identity', position = 'dodge') + 
+  coord_flip(ylim = c(1500, 2000)) + 
+  theme_bham_stats +
+  theme(legend.position = 'none')
+grid.arrange(p1, p2, p3, p4, nrow = 4, ncol = 1)
+```
+
+Look at how the hierarchy effect differs by item:
+
+```{r, fig.width = 8, fig.height = 24}
+item_hierarchy <- power %>%
+  group_by(PairName, HierarchyCond) %>% 
+  summarize(M = round(mean(RT), 0),
+            SD = round(sd(RT), 0))
+
+item_hierarchy$Facet <- rep(str_c('Group', 1:4),
+                         each = 16)
+
+p1 <- item_hierarchy %>% 
+  filter(Facet == 'Group1') %>% 
+  ggplot(aes(x = PairName,
+             fill = HierarchyCond, y = M)) +
+  geom_bar(stat = 'identity', position = 'dodge') + 
+  coord_flip(ylim = c(1500, 2000)) + 
+  theme_bham_stats +
+  theme(legend.position = 'top')
+p2 <- item_hierarchy %>% 
+  filter(Facet == 'Group2') %>% 
+  ggplot(aes(x = PairName,
+             fill = HierarchyCond, y = M)) +
+  geom_bar(stat = 'identity', position = 'dodge') + 
+  coord_flip(ylim = c(1500, 2000)) + 
+  theme_bham_stats +
+  theme(legend.position = 'none')
+p3 <- item_hierarchy %>% 
+  filter(Facet == 'Group3') %>% 
+  ggplot(aes(x = PairName,
+             fill = HierarchyCond, y = M)) +
+  geom_bar(stat = 'identity', position = 'dodge') + 
+  coord_flip(ylim = c(1500, 2000)) + 
+  theme_bham_stats +
+  theme(legend.position = 'none')
+p4 <- item_hierarchy %>% 
+  filter(Facet == 'Group4') %>% 
+  ggplot(aes(x = PairName,
+             fill = HierarchyCond, y = M)) +
+  geom_bar(stat = 'identity', position = 'dodge') + 
+  coord_flip(ylim = c(1500, 2000)) + 
+  theme_bham_stats +
+  theme(legend.position = 'none')
+grid.arrange(p1, p2, p3, p4, nrow = 4, ncol = 1)
+```
+
+
+
+## Visualizations
+
+First, the effect of picking the male response:
+
+```{r, fig.width = 8, fig.height = 6}
+power %>%
+  group_by(SubjGender, PickedGender) %>% 
+  summarize(M = round(mean(RT), 0),
+            SD = round(sd(RT), 0)) %>% 
+  ggplot(aes(x = PickedGender, fill = PickedGender, y = M)) +
+  geom_bar(stat = 'identity') + 
+  facet_wrap(~SubjGender) +
+  coord_cartesian(ylim = c(1600, 1900)) + 
+  theme_bham_stats
+```
+
+Second, the hierarchy effect:
+
+```{r, fig.width = 8, fig.height = 6}
+power %>%
+  group_by(SubjGender, HierarchyCond) %>% 
+  summarize(M = round(mean(RT), 0),
+            SD = round(sd(RT), 0)) %>% 
+  ggplot(aes(x = HierarchyCond, fill = HierarchyCond, y = M)) +
+  geom_bar(stat = 'identity') + 
+  facet_wrap(~SubjGender) +
+  coord_cartesian(ylim = c(1600, 1900)) + 
+  theme_bham_stats
+```
+
+Third, the gender condition effect:
+
+```{r, fig.width = 8, fig.height = 6}
+power %>%
+  group_by(SubjGender, GenderCond) %>% 
+  summarize(M = round(mean(RT), 0),
+            SD = round(sd(RT), 0)) %>% 
+  ggplot(aes(x = GenderCond, fill = GenderCond, y = M)) +
+  geom_bar(stat = 'identity') + 
+  facet_wrap(~SubjGender) +
+  coord_cartesian(ylim = c(1600, 1900)) + 
+  theme_bham_stats
+```
+
+This completes this script.
+
+
+
