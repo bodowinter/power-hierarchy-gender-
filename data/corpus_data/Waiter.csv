@@ -1,0 +1,209 @@
+Record#,Sentence,Tagging,Female,Male,Unknown,Disregarded
+1,She has also been known to operate the dumb waiter that used to stand in the pub - this is a little eerie as the dumb waitier was ripped out of the pub several years ago.,d,0,0,0,1
+2,"Chef, cleaning, bar staff and waiter vacancies in Penzance, St. Ives and Dorchester.",u,0,0,1,0
+3,The waiter shook his head.,m,0,1,0,0
+4,"In a restaurant, the waiter says - ""I''m Joe, do you want to order?",m,0,1,0,0
+5,"The head waiter seated me silently -another solitary diner - whilst I regarded him like a silent movie starfrom films I had once loved, uttering hushed admiring thankyous to themenu, the cutlery, the glass of red wine.",m,0,1,0,0
+6,I was a head waiter at one pound a week for many years.,u,0,0,1,0
+7,"Good night, Mr Craven,'' said the old waiter, hurrying after them as they went out.",u,0,0,1,0
+8,"A waiter, newly arrived from the Ticino, tells the story of a little boy, Luigi Derighetti, who was stolen from his village, years ago.",u,0,0,1,0
+9,"Mix up with our breakfast in the morning, the waiter gave it to a couple who were only just sitting down and then we had to argue to get one!",u,0,0,1,0
+10,"The waiter arrives, and John Maxwell, who controls the diverse groups of programmers working for Mastertronic, asks if there''s anything special on the menu.",u,0,0,1,0
+11,The wine waiter was pushing be to look at his Bordeaux list.,m,0,1,0,0
+12,(The handsome who waiter who unfolds a strached linen serviette a metre square and lays it on your lap is a good sign.) They now do a 2 course menu at 19.95.,u,0,0,1,0
+13,"Evidently the profession of waiter did not intrigue him, for in 19OO he received a five-months'' sentence for thievery and in 1902 he was sentenced to eight months in jail for the same reason.",m,0,1,0,0
+14,At one stage I summoned a waiter over.,u,0,0,1,0
+15,"Jessica Gerger (Gemma), Sarah McGlade (Maddie) and Andy Leonard, who does a fabulous portrayal of Italian waiter Gio, complete the list.",m,0,1,0,0
+16,The other monologue which he actually brooadcast was in exactly a similar vein[ About an argument over the bill for the Last Supper between Jesus and a waiter ].,u,0,0,1,0
+17,"THE SUDDEN DEATH AT ASHTON Adjourned Inquiry The adjourned inquiry into the cause of death of Mary Ann KIELEY, wife of Edward KIELEY, waiter, Crompton''s Yard, off Pitt-street, Ashton, was held on Thursday afternoon, at the Nelson Tavern.",m,0,1,0,0
+18,"Oh yeah, and the waiter''s been brutaly beaten.",u,0,0,1,0
+19,"Our waiter was Italian and, as the Italian team had already been knocked out, he was in demand for Thursday''s shift and kept us updated on the England game throughout the meal.",m,0,1,0,0
+20,"Signals and processes When a process dies, its parent is sent a SIGCHLD . So one way of avoiding zombies is to install a signal handler that waits for the children as and when they die: /* this first line is needed on some systems to get POSIX behaviour */ #define _INCLUDE_POSIX_SOURCE #include <stdlib.h> #include <signal.h> #include <sys/wait.h> void waiter(int dummy) { int st; while (wait3(&st, WNOHANG, NULL) > 0); } int main(int argc, char *argv[]){ struct sigaction act; act.sa_handler=waiter; sigaction (SIGCHLD, &act, NULL) ; ... } You also should make sure that when the parent exits, it wait s for any children which have not yet finished.",d,0,0,0,1
+21,"Live Crew Our waiter kept adding crushed ice to the wine bucket, which was a nice touch.",u,0,0,1,0
+22,"The advice is: When the waiter asks if you want a portion of chips to share, say yes.",u,0,0,1,0
+23,"La Tasca is committed to recruiting and developing the best people, from chef to waiter, bartender to manager.",u,0,0,1,0
+24,"When you are looking for that ""something different"" for your events you won''t find better than professional actor Rodney Paulden and his merry band who go under the name of ADHOC Actors . You want a Spanish waiter e.g. Manuel or Frankie Swankeroony the Las Vegas night club owner or even members from the Rocky Horror Show.",m,0,1,0,0
+25,Upon our arrival Monica organised us a waiter for an outside table and told us to ring her when we were finished so that she could return and collect us.,u,0,0,1,0
+26,"We chose a Greek restaurant named Entelia which means ''perfection'' according to our waiter, a young Bristolian called Stephen who could easily pass for a Greek.",m,0,1,0,0
+27,"This absinthe, drunk in Spain on a works outing, caused 55 year-old Bernadette to jump onto the table and dance lewdly with the waiter, pulling his dark head into her flouncy dress and corkscrewing his nose into her fragrant inner folds.",m,0,1,0,0
+28,"Fleeting flirtations with a beautiful boy on the Brooklyn Subway, with the dishy waiter in a Village café (''Your Café con Leche Hands''), or with guys seen at the Met or at the gym are the background to a dreamy fantasy world which is both honest and erotic.",u,0,0,1,0
+29,"In his maroon blazer, instinctively striking a series of classic waiter poses, bookie''s pen behind the ear, our solicitous but silent service today is to the Ritz waiter what the ragged threadbare blue hand towel over his arm is to an immaculate napkin.",m,0,1,0,0
+30,"After dinner I trifled agreeably with my brandy-and-water till it was near seven o''clock, when I paid my bill, thought of the waiter and did not forget Father Boots.",u,0,0,1,0
+31,"So we tried not to lay down our forks, but we did forget, and by golly, the waiter took the plate away.",u,0,0,1,0
+32,"I ordered up lemons and a bottle of rum, and after having the fifty remaining oysters opened I sent the waiter away.",u,0,0,1,0
+33,"You may work in a retail store, or as a bartender, waiter, kitchen helper, waiter''s assistant, hostess, or amusement park attendant, for example. 4.",u,0,0,1,0
+34,The waiter tried to kill sh0ckwave by dropping knives all over his part of the table.,u,0,0,1,0
+35,"Many actors especially around Covent Garden play the role of waiter, and very good they are at portraying the kind of waiter we''d prefer not to see that often.",u,0,0,1,0
+36,Call the waiter and ask for a 20 percent reduction on the bill.,u,0,0,1,0
+37,"Especially, after the service had been so poor and waiter (one in particular) was so, so rude and dismissive it made myself and my partner very uncomfortable indeed.",u,0,0,1,0
+38,And then some waiter steals it...,u,0,0,1,0
+39,"Examples are as follows:- where an essential nature of the job requires a man or a woman because of their physiology, for example, for modelling clothes or for a dramatic performance. where for reasons of decency or privacy it is necessary to employ a person from a particular sex, for example, a woman for the position of a ladies changing room attendant. in a restaurant it may be necessary to employ a person of a particular racial group for authenticity reasons, for example, for a job as a waiter in a Chinese restaurant.",u,0,0,1,0
+40,A teenager was stabbed in the middle of a West England restaurant by a knifeman who also knocked over a heroic waiter who gave chase.,u,0,0,1,0
+41,"Think like an aristocrat or waiter: place is simply your station in society, or perhaps your setting at dinner.",u,0,0,1,0
+42,"There was a waiter, hovering, like some preying bird and he just turned - didn''t even click - and waved the empty bottle, as if he expected him to peck it from his fingers.",m,0,1,0,0
+43,"Grace''s old boyfriend comes to visit and asks her to join him and his girlfriend in a threesome. 07 - Gypsies, Tramp and Weed Grace gives Will a gift certificate to a psychic for his birthday, and during the birthday dinner she also gets a waiter fired.",u,0,0,1,0
+44,"They neist slide alang close by awd Chowden Ha'' , Where wor Bet gets her drop o'' tea waiter , Whilk she says does se weel her black tea pot draw, Whether tea''s in or nut'' s little maiter.",u,0,0,1,0
+45,"""two of the men - 21-year-old trainee plumber Ryan Wilson and a 28-year-old waiter - remained critically ill.",u,0,0,1,0
+46,Cruise ships to for assistant waiter.,u,0,0,1,0
+47,"The waiter refused, which rather annoyed me.",u,0,0,1,0
+48,"""Big Daddy"" is the latest Adam Sandler film, and is exactly what you''d expect, some laughs but not earth shattering.. then our last meal in Vegas, we decided to go to ""America"" as it was close to the cinema and we could get to the airport quickly from there, we informed the waiter we only had 45 minutes so he wouldn''t keep us hanging around ""I''ll tell the chef"" he said.. 30 minutes later he came back to the table: ""You''re going to kill me..",u,0,0,1,0
+49,"Thus, Adina owns the village café (not a farm), lovesick Nemorino is a waiter, and there are plenty of excuses for pedal pushers, loafers and swirly skirts.",m,0,1,0,0
+50,Not for him the debilitating trawl from pub job through to waiter as work dried up.,u,0,0,1,0
+51,"She orders a Coke, asks for an ashtray, looks for a cigarette, apologises for being late, drops her handbag, asks about my love life, calls the waiter ""dahling"", cackles with laughter and theatrically breaks into several accents, from Southern vamp to New York camp, even mock Queen of England (""how charming "").",u,0,0,1,0
+52,""" Instead, the waiter remarked, in rather good English, that the driving competition was way out of town and every room for miles around was taken months ago.",u,0,0,1,0
+53,Acclaimed author of sea along this steward for waiter.,u,0,0,1,0
+54,"He''s a great natural clown, and his day job as a waiter gives him lots of scope for some blindingly choreographed slapstick sequences.",m,0,1,0,0
+55,Bartender and waiter in quality restaurant.,u,0,0,1,0
+56,"An exciting new development from one of the UK s newest Holiday ........... more Head Waiter - 2 Rosette Restaurant - Buckinghamshire (Buckinghamshire, South East) 1job.co.uk 20-6-2006 This fine-dining two-rosetted restaurant set in the heart of old Buckinghamshire is looking for a head waiter.",u,0,0,1,0
+57,""" said old William, the waiter, ""Because I used to serve him"".",m,0,1,0,0
+58,"The coffee also blistered her wax lips, and so disagreeable was the experience that she arose and left the restaurant, paying no attention to the demands of the waiter for ""20 cents, mum.",u,0,0,1,0
+59,He waved over a waiter.,u,0,0,1,0
+60,"Parker reveals he has heard Olsen talking to Banino, the head waiter, about expecting a message the next day.",m,0,1,0,0
+61,"This is where the cocktails come in, after a couple of them, any sense of decorum will be forgotten and you''ll have a whale of a time – and something to explain to your fiancé as your hens will follow you around with a camera to capture the moment when you: a) kissed the bartender after drinking a bartender from hen night hoots b) asked the waiter for his underwear after drinking a naked waiter from hen night hoots or someone else if he says no c) asked, as loudly as possible, for Sex on the bar (you shouldn''t have to go to the beach)",u,0,0,1,0
+62,"Andrew Shanahan investigates Andrew Shanahan Friday March 17, 2006 Guardian When the waiter leads you to your table and you pass the cosy settings by the fireplace and end up with a damp trestle on the fire escape, it''s tempting to ask yourself the question: what would Michael Winner do?",u,0,0,1,0
+63,""" Where there was ""life"" In the hotel at Banff in the Rocky Mountains some years ago a Highland waiter spoke to me.",u,0,0,1,0
+64,Hope takes out her frustrations by telling the waiter that the salsa isn''t hot enough.,u,0,0,1,0
+65,"The meal cost Rs6.30, the waiter turned down my second Rs5 note because it had a tear on one edge.",u,0,0,1,0
+66,"However, it''s customary to leave a small gratuity for the room cleaner, your regular waiter and the porter, especially if you are at a resort for a week or more.",u,0,0,1,0
+67,"He plays Andrew Largeman, a struggling actor who, sedated by the anti-depressants prescribed by his psychiatrist father, ekes out an existence as a waiter.",m,0,1,0,0
+68,The waiter goose-stepped away.,u,0,0,1,0
+69,"Matchday prices from £130 (+vat) per person per game Seasonal prices from £117 (+vat) per person per game For further information or to book your place contact the Corporate Sales Team on the hospitality hotline shown below or email your enquiry to corporate@saintsfc.co.uk Hospitality Hotline: 0845 688 9377 Your Executive Box package includes: Private facility to entertain up to 10 guests Choice of delicious catering packages Full complimentary bar Superior balcony seats outside your box Dedicated waiter or waitress Matchday programme Matchday car parking Company branding above your box (seasonal clients only) ""In the summer of 2004 we decided to take an Executive Box at Southampton Football Club.",m,0,1,0,0
+70,"""Pas de problème ,"" replied the waiter.",u,0,0,1,0
+71,"Plus, eagle-eyed viewers may recognise Walter Eugene, as a camp waiter at the spa, who played a more sinister character in Pupi Avati''s masterful HOUSE WITH THE LAUGHING WINDOWS (1976).",m,0,1,0,0
+72,"Thenceforward, he sat all day over the fire in the private room, gnawing his nails; there he dined, sitting alone with his fears, the waiter visibly quailing before his eye; and thence, when the night was fully come, he set forth in the corner of a closed cab, and was driven to and fro about the streets of the city.",u,0,0,1,0
+73,"This can be in a restaurant where a waiter will ask for your order, another will write it down, a third will take the slip to the kitchen and a fourth will supervise the event.",u,0,0,1,0
+74,"Im struck the to a Bunkys a people make, for Gods book diet maker 10lb Hi, Bunky. will like We. could I have unrestricted immigion the waiter people nearest months Ive shouldnt do this, Avidly studying sat book diet maker adhd not look so pernicious and a fist. a pencilled there were the paper one month, how much said.",u,0,0,1,0
+75,"sword, the hilt of which most appropriately reprsented a crocodile, very finely executed in gold. 1798 King Ferdinand of Naples The Duchy of Bronte - an estate of 30,000 acres in Sicily A diamond-hilted sword which had once belonged to Louis XIV. 1798 The Greek island of Zante A gold sword A gold cane 1798 The East India Company £10,000 1798 The Emperor of Russia A miniature of the Tsar A box set with diamonds valued at £2500 1798 The King of Sardinia A gold box and chain set on a silver waiter 1798 London''s Turkey Merchants (the chartered ""Company of merchants trading in the Levant seas"" The silver Nile Cup by Paul Storr of London 1798 Selim III Sultan of Turkey (Grand Signeur) A canteen A musket mounted in silver and ivory 1798 ditto A pelisse of the finest scarlet cloth, lined with most beautiful sable fur - valued at £1000 1798 ditto A diamond aigrette, or plume of triumph, valued at £2000, known as a chelengk, and taken from one of Selim''s turbans.",d,0,0,0,1
+76,"If that fails say ""waiter"" as he passes. 12 – Jimmy Savile.",u,0,0,1,0
+77,"Flux, a tide waiter of this port, sundry articles, being part of the guns, stores and materials, belonging to the Portuguese frigate ""Princess de Brazil"", some time stranded within the limits of this port.",d,0,0,0,1
+78,The waiter brings them hot coffee.,u,0,0,1,0
+79,"Malcolm Williamson, a former waiter, whose wife is principal chef at the Ben Loyal Hotel, Tongue, spoke of his surprise at being accosted by a man as he opened his fish and chip van for business in a car park in the centre of Durness in January.",m,0,1,0,0
+80,"On a July evening in 1548 the waiter was somewhat startled at the appearance of two simply-dressed, slight and timid-looking ladies seeking accommodation.",u,0,0,1,0
+81,I ordered a bottle of wine with the meal - the little Filipino waiter tried very hard serving the wine - surely he would have been much better in more palatial surroundings though.,m,0,1,0,0
+82,""" When their dining companion is poisoned by a man disguised as a waiter, Tom decides to go to South America to find the cities and Luis decides to go with him.",m,0,1,0,0
+83,Waiter service is common although there are many self-service snack bars.,u,0,0,1,0
+84,"To take advantage of whatever you find tempting, just print off this page and present it to the waiter or waitress when you arrive.",u,0,0,1,0
+85,"Duties that you can expect to do are as follows: • management • general supervision and daily operations • bar and waiter services • assisting with housekeeping • light maintenance work • food preparation • driving • guest excursions and entertainment Bushveld Game reserve There are many game reserves that you may be placed in, many of which border onto Kruger National Park, which sports amazing views and is home to a variety of game and animals such as buffalo, antelope, hippos, lions and elephants.",u,0,0,1,0
+86,"The ""drinks waiter"" gets an even greater reaction and then the two of them launch into a repartee involving the difference between the French and Italians with a lot of visual and verbal comedy involving encouragement from the audience.",u,0,0,1,0
+87,"Churchill, then very old, was not on his best form, and Jacqueline later teased her husband, ""Maybe he thought you were a waiter"".",m,0,1,0,0
+88,We turned up late to find the table had been given away - the waiter claimed to have called me but this was obviously not true as I had had my phone with me all the time.,u,0,0,1,0
+89,"Going out : First and foremost, you''ll be being sociable, plus the waiter/waitress will generally be a more attractive proposition than staring at the T.V. Rather than concerning yourself with the merits of fresh herbs as opposed to their dried counterparts, you just have to decide what to order off the menu.",m,0,1,0,0
+90,"But when the waiter looked puzzled, I realised I''d asked for pancakes with sugar and beer!",u,0,0,1,0
+91,"""Waiter,"" shouts a more courageous guest, ""could I have another fork?",u,0,0,1,0
+92,She looks up and smiles as a waiter walks past with a high tray stacked with baskets of nachos and spins past a woman holding a small dog in one hand and a beer in the other.,u,0,0,1,0
+93,"'' ''It''s a matter of opinion,'' said the waiter.",u,0,0,1,0
+94,How do I tell the waiter I have a nut allergy?,u,0,0,1,0
+95,"""I didn''t notice at first, as I say, it was when I came down for breakfast and the waiter said to me ''Mr Prescott, you''ve got some Greenpeace protestors on you'', and I said no, don''t be daft, it''s just a bit of curry from last night, but he said no so I held up a spoon and I looked into it and I said ''Hey, you''re right lad, I have got bloody Greenpeace protestors on me.",u,0,0,1,0
+96,"A most unusual window display, old Spy prints of lawyers and large posters of old British films with courtroom themes ( Trial & Error , A Pair Of Briefs , Brothers In Law and Action For Slander ) will make the legal types who pop in here feel at home, but that is only half the story; it has a pleasant, almost Parisian bistro feel, with checked tablecloths, cases of books and strange ceramics, a splendid old dumb waiter, plus walls lined with big pub mirrors and several black and white photos of famous people and Roxy the landlady plus other more mysterious objects - I think several long chats with her behind the bar might begin to explain the significance of it all.",d,0,0,0,1
+97,"The waiter then suggests steak tartare, causing Fulci to recall what happened next, when the man chainsawed and minced up the rest of his wife''s body and fed it to their pigs...",u,0,0,1,0
+98,"He called the waiter over, gently asked if I could have something else and in no time at all my meal had been swapped for the spaghettini with button mushrooms, home-grown sorrel, lemon and parmesan (£12) which was wonderfully oily and bitter, a deliciously satisfying pasta dish.",u,0,0,1,0
+99,Or they ask the waiter to bring the menu.,u,0,0,1,0
+100,"A demented housewife, her licentious husband, a despairing waiter and his bed-hopping diners who have their minds on more than the menu.",m,0,1,0,0
+101,"Inside it wasn''t bad at all, the food was fine and the young waiter, although flustered was very helpful.",u,0,0,1,0
+102,"When walking towards the table, the waiter thinks: ""$5 split between 3 men?",u,0,0,1,0
+103,"Of course there will always be a few difficulties but many experts argue that using your card online is actually safer than using it to buy petrol or pay for a food bill etc. Think about it, when you next pay for a Restaurant bill using your plastic how easy would it be for the waiter to make a copy of your name, number and expiry date and then use it at a later date.",u,0,0,1,0
+104,"Italian comedian Benigni wrote, directed and starred in this movie, which follows the romantic fortunes of Jewish waiter Guido (Benigni) in fascist Italy and later in a concentration camp where he keeps his son alive by telling him the harsh regime is just a game.",m,0,1,0,0
+105,"Julie becomes the focus for a new book, and the pair become even closer until Julie brings home Franck (Jean-Marie Lamour), a waiter from the nearby town.",m,0,1,0,0
+106,"Not only were the competitors tested on their product knowledge, but in that all important area of dealing with customers - the inter-personal skills of the wine waiter can strongly influence how we regard an establishment.",u,0,0,1,0
+107,Our waiter was full of enthusiasm.,u,0,0,1,0
+108,The waiter returns to fill the man''s coffee cup.,u,0,0,1,0
+109,"Greeted hurriedly by a waiter, we were asked to wait to be seated - it was worth the 5 minute wait!",u,0,0,1,0
+110,French tries to drink her coffee in peace despite helpful waiter Rodriguez.,m,0,1,0,0
+111,Dress clothes every evening; knows the ropes; calls every policeman and waiter in town by their first names.,u,0,0,1,0
+112,I''ve looked through the wine list and reflected on the fact our head waiter had been happy to recommend a great wine... it is a keenly felt regret I assure you.,u,0,0,1,0
+113,I was shocked and embarrassed by this outburst - but decided to discuss it with the waiter as we departed.,u,0,0,1,0
+114,Waiter: Anything else?,u,0,0,1,0
+115,A waiter pours her a large glass of red.,u,0,0,1,0
+116,"Next morning, I wished to change a bank-note, and accordingly rang for the waiter, while I extracted the sum in question from the box which held the Masonic clothing.",u,0,0,1,0
+117,"Using a Dietary Alert Card:- avoids your message being ''diluted'' or ''corrupted'' between the table and the kitchen, as the waiter can pass your card directly to the chef helps explain your dietary needs with the minimum fuss and embarrassment authenticates your request as a medical requirement rather than a ''fad diet'' Customers with sensory or communication difficulties in addition to their dietary needs find Dietary Alert Cards even more helpful in articulating complex diets.",u,0,0,1,0
+118,"After all the bones were cleared away by our happy waiter, he then reappeared carrying a cake speared with lit sparklers.",m,0,1,0,0
+119,Our waiter confessed he had no idea which dip was for which dish - surely someone could have told him?,m,0,1,0,0
+120,"Al the Org took responsibility for calculating the bill for each individual (a simple matter of dividing the total by eight) and got it wrong, a fact which went unnoticed until the waiter embarrassed us by informing the party that there wasn''t enough money to cover the bill (wasn''t it ever thus).",u,0,0,1,0
+121,"The waiter has a vital role as a link between the two couples, holding the piece together.",u,0,0,1,0
+122,The waiter arrives.,u,0,0,1,0
+123,When the waiter brings the bill the friends find they have spent all their money.,u,0,0,1,0
+124,"Big Mouth, Jacobs Ladder, Enough is Enough, and TubThumper all got an outing, decorated throughout with visual gags (including Danbert dressed as a cocktail waiter mixing a cocktail whilst singing ""A man walks into a bar"" then kindly gaving it to a lady in the front row (they love their fans and their fans love them).",u,0,0,1,0
+125,"(Thanks Pam) A waiter delivered a bottle of fine Merlot to a beautiful woman and said, ""This is from the gentleman at the bar.",u,0,0,1,0
+126,"The food was however good and when I eventually got the ordering of wine sorted, the waiter redeemed himself by only charging for 2 glasses of the fino sherry and earned himself a larger than usual tip.",m,0,1,0,0
+127,"The waiter is being sarcastic, and is suggesting that Mr Jonson is being too fussy.",u,0,0,1,0
+128,This used to be a laundry room in 1909 with a dumb- waiter used from the upper floor kitchens to send the laundry up and down.,d,0,0,0,1
+129,"The waiter did not know where to put the wine glasses when he had served, nearly knocked over a wine glass, then no-one cleared our table at all, despite us sitting there for 45 minutes after finishing the meal & having asked for and settled the bill.",m,0,1,0,0
+130,"Moreover, if another waiter is more attentive but it is stipulated that tips cannot vary, then we may want to say that the effort-making waiter is not getting what he deserves.",u,0,0,1,0
+131,"This transmitter is ideal for conference tables, restaurant tables to call a waiter or for reception and bar areas.",u,0,0,1,0
+132,""" I can see our waiter hovering.",u,0,0,1,0
+133,"Everybody performing: it''s in Sartre (you know, the waiter thing) and Shakespeare . He''s also wrong in not disputing this: David also made an interesting point during the discussion, when he claimed that both science and theatre have retreated from their ambitions over the last few centuries.",u,0,0,1,0
+134,"If you''ve not handed in your essay, be aware that you''ll probably find your tutor in here banging on about Sartre''s theory of self-awareness with the waiter.",u,0,0,1,0
+135,I have already raised £600 to cover my food and accommodation costs while I will be away through a sponsored 10 mile swimathon and savings from my job as a waiter.,u,0,0,1,0
+136,As chance would have it a local waiter was walking past the stage carrying a tray of drinks.,u,0,0,1,0
+137,"""One of those was playing a waiter in Death of Salesman.",u,0,0,1,0
+138,""" ""Yes, sir,"" said the waiter, and with a low bow departed.",u,0,0,1,0
+139,The waiter told us that we have to go becouse sombedy else had reservation at that time.,u,0,0,1,0
+140,"But the phrase is actually used repeatedly as a matter-of-fact statement by the wise old hotel waiter, played by Edward Fox, who sounds like he''s recovering from a bad case of tonsillitis when we first meet him in Act 2.",m,0,1,0,0
+141,"The first time I went to see what it was like and it only cost me a doubloon (about eleven francs), but ever after it cost me four doubloons, for the following reason: An elderly gentleman, who sat next me at supper, guessed I was a foreigner by my difficulty in making myself understood by the waiter, and asked me where, I had left my lady friend.",u,0,0,1,0
+142,Elaine stopped eating as soon as she saw that Leonard had finished and beckoned the waiter.,u,0,0,1,0
+143,""" Looking wistfully across the Blue Nile, my waiter continued: ""But now I will go home, back to Ethiopia.",u,0,0,1,0
+144,"Our friendly and efficient waiter tickled us gently away from fish, ''as it was monday'' (double Brownie points) and so we went for a silky Celery and Stilton Soup with Croutons (£3.50) and Mushrooms Stuffed with Boursin Cheese (£3.75) which came with a ramekin brimming with a dragon fuel garlic mayonnaise.",u,0,0,1,0
+145,"I was advised by the waiter, who had tried to stop me ordering the dish, to drink as much milk as possible before going to bed.",u,0,0,1,0
+146,""" and turning about I pushed the waiter aside - he was just bring me some more toast - and rushed violently out of the room and down and out upon the queer little esplanade in front of the hotel.",m,0,1,0,0
+147,"At the awards ceremony, after the announcement, the wine waiter brought me a glass of sparkling water.",u,0,0,1,0
+148,I would call the waiter over and tell him I was a vegetarian.,m,0,1,0,0
+149,"He called for a glass of whiskey, and was served by the waiter, BENNETT.",u,0,0,1,0
+150,"Re-examined: Was at home when the prisoner called on the 6th of May, and they both left together; the prisoner''s wife left a waiter and umbrella for half-a-crown that prosecutor lent the prisoner to pay his rent; his mother came shortly afterwards to redeem the umbrella and left the waiter; the prisoner came on the 6th to know whether he might have the waiter and witness replied in the affirmative.",d,0,0,0,1
+151,And democratic nations island of curacao steward for waiter.,u,0,0,1,0
+152,""" Sam asked after the waiter left.",u,0,0,1,0
+153,"But Forrest said. crouching forward for active Pan Am The waiter the girls Germans, I green was the behave himself, said with said, I I volunteer, a good us have a late they were like to another table. with in his looking at felt only jammed.",d,0,0,0,1
+154,"Technically, we are supposed to leave $10 for Hassan our waiter, whose service hasn''t been the best, and $10 for the Room Boy, who has been great, always smiling.",m,0,1,0,0
+155,""" ""While the service from our chirpy South African waitress was sweet and cheerful, but her good work was marred by the sudden appearance of a waiter we hadn''t seen all night, asking if we could leave the tip in cash, after we had settled the bill.",m,0,1,0,0
+156,"Enjoy the company of your guests and let the fully Qualified Chef take care of the cooking for you A private Chef can be hired for any occasion, any Location Where cooking is not in house possible, We can prepare the food in our own fully commercial And licensed kitchen for you Why not have a waiter or waitress serving you at the night?",m,0,1,0,0
+157,Waiter service in restaurants is common.,u,0,0,1,0
+158,There was a slight hiccup when we questioned an item on the menu the waiter couldn''t seem to work out.,u,0,0,1,0
+159,"I would advice anyone going there not to bother, especially if you like to see your waiter smile or even speak to you like your paying money to be there, not just some scum off the street.",u,0,0,1,0
+160,"If it doesn''t rain the extra capacity will result in an extra income of £200, less the £40 required to pay the waiter.",u,0,0,1,0
+161,Panorama Hotel Bedroom Food & Drink: Meals are buffet or waiter service.,u,0,0,1,0
+162,"The service was ok, the only problem I had with it was that the waiter kept taking our wine away to put back in the fridge.",u,0,0,1,0
+163,"We walked in and were directed upstairs however the waitress didn''t follow she just waited downstairs so we ambled our way to a table of our own choosing and beckoned a waiter My starter was venison and was quite good and my main was braised gammon with mash which was extremely plain but then again I had ordered a plain dish and for what it was, was pleasant - especially for £15 any more and I would''ve felt robbed.",m,0,1,0,0
+164,Neither do they sit around getting soggy on a trolley only to be dunped unceremoniously onto the plate by a waiter.,u,0,0,1,0
+165,The only way to be sure the money goes to the waiter is to leave a cash tip Solicitor Catherine Scrivens But the European Court of Human Rights in Strasbourg has upheld the decision by UK courts to reject the complaints - ending a 10-year legal battle.,u,0,0,1,0
+166,"By contrast, the status of a head waiter in Spain, where tourism had long been seen as vital to the economy, was viewed in much the same way as an airline pilot.",u,0,0,1,0
+167,(The waiter pours the wine after getting the CIGARETTE SMOKING MAN''s approval.) CIGARETTE SMOKING MAN: He''s expecting to meet you here.,u,0,0,1,0
+168,"Cook on the spit is curving me, flames sear through every nerve in me - now here''s a waiter serving me!",u,0,0,1,0
+169,"After the war, Vic decided not to return to his previous occupation as a waiter at London''s Waldorf Hotel and has lived in Lambourn ever since.",m,0,1,0,0
+170,"The new owner, a former Ashoka waiter who is a qualified pharmacist and the owner of the Apple chain of chemist''s shops in Glasgow, leapt at the chance.",u,0,0,1,0
+171,The waiter kept $2. $27+$2 = $29.,u,0,0,1,0
+172,Speak in English and shout louder each time they fail to understand you and you will probably get the rusty 1975 Fiat Panda and the paella special only because the waiter has urinated in it.,u,0,0,1,0
+173,"He seemed inclined to argue, but accepted her view, and helped her slowly and slightly painfully walk in to the little place, where he was greeted as a long lost friend by the effusive Italian waiter.",u,0,0,1,0
+174,"Flunked out of an attempted doctorate (the words ""George Meredith"" can still bring him out in hives) and dossed around as waiter, bartender, overeducated skinhead until ""Music saved my life!",m,0,1,0,0
+175,"Our waiter managed to forget our complimentary champagne, our wine and then our side dishes - ALL OF THEM!",u,0,0,1,0
+176,"Head waiter and part-owner Ash escorted us to the sleek, contemporary bar where we enjoyed a couple of Cobra beers, while the couple next to us sipped Dom Perignon vintage from iced glasses.",u,0,0,1,0
+177,Our waiter Oliver found the right balance of humour and attentive service without being overbearing or indiscreet.,m,0,1,0,0
+178,The solitary waiter in attendance greeted her like an old friend.,u,0,0,1,0
+179,"Suddenly the company sharing the lawyersâ€TM table seemed remarkably sober and civilised, an impression reinforced by the fact that they swiftly drained their glasses and called the waiter over to settle the bill.",u,0,0,1,0
+180,"All three plays utilise the death of several characters as a conclusion; birth features in two of the plays, as does the imagery of a car crash; a waiter thinks of jumping off a cliff in one play, while in another a woman commits suicide by throwing herself off a cliff.",u,0,0,1,0
+181,"A man enters his favourite ritzy restaurant, and while sitting at his regular table, he notices a gorgeous woman sitting at a table nearby all alone. > > > He calls the waiter over and asks for their most expensive bottle of Merlot to be sent over to her, knowing that if she accepts it, she is his for the night. > > > The waiter gets the bottle and quickly sends it over to the girl, saying it is from the gentleman at a nearby table.",u,0,0,1,0
+182,And look forward to some top service from the most famous waiter ever to leave Barcelona.,u,0,0,1,0
+183,"Admission to the Queenâ€TMs Club and to the Membersâ€TM Clubhouse â€¢ Private Club room for 12 guests â€¢ Reserved seat on Centre Court in either Row A or B of the North Stand â€¢ Pimms reception â€¢ Complimentary full bar throughout the day (excl. champagnes, wines and liqueurs) â€¢ Excellent 5 course private luncheon, followed by coffee and chocolate truffles â€¢ Personalised menu cards â€¢ Traditional afternoon tea with strawberries and cream â€¢ An experienced waiter assigned exclusively to the area â€¢ Souvenir programme, order of play and seat cushion per guest.",u,0,0,1,0
+184,"The other waiter tried to appease us, offering free drinks.",u,0,0,1,0
+185,Our waiter Moi was pure charm.,u,0,0,1,0
+186,"The 1983 attempt starred the Golden Girls actress Bea Arthur and removed the Basil Fawlty character completely. * In Germany, incompetent Spanish waiter Manuel had his nationality changed to Italian.",m,0,1,0,0
+187,"However, after almost half an hour''s wait, we finally got hold of a waiter that would actually take our order.",u,0,0,1,0
+188,"Paul [Paul Sharma -- Swiss Toni , Bodies ] is the ""Welsh waiter"" who infuriates Nitin by being everything Nitin''s dad wishes Nitin was.",m,0,1,0,0
+189,"While they were drinking the ale, the waiter served each guest with a cake, which be was expected to carry home.",u,0,0,1,0
+190,"Our waiter advised us to order before the Gourmands got theirs in as, obviously, it was going to be all hands to the pumps in the kitchen once that set of tickets arrived.",u,0,0,1,0
+191,"And the most glaring omission in the film, which shows you that the Israeli team was not only savage but also ignorant of their targets, was what happened on July 21st 1973, when ''Ali Bushiki, a Moroccan waiter resting with his pregnant wife around a swimming pool in Norway, was murdered by that assassination team merely because ''Ali resembled what the hit team thought Abu Hasan Salamah looked like.",m,0,1,0,0
+192,We were informed by our waiter that a cancellation meant we could eat in the restaurant if we preferred.,u,0,0,1,0
+193,"Even when accidentally bumped by a waiter, Jack is recognized and acknowledged by name (is he famous, or something?).",u,0,0,1,0
+194,"The Hotel Hasdrubal has outdoor and indoor pools; its own private stretch of beach, complete with waiter service; two restaurants; a shabby gym; and a new five-star health spa.",u,0,0,1,0
+195,"No sooner had we arrived, than a waiter appeared with tea, offering to light the fire.",u,0,0,1,0
+196,"When you arrive at a restaurant, make sure the waiter or waitress knows about your allergy and how serious it is.",m,0,1,0,0
+197,Monday – Andrew is a waiter in food and wine.,m,0,1,0,0
+198,They always enjoyed the joke that the waiter supposed they were married.,u,0,0,1,0
+199,I went to an audition for small part as waiter in a well-known drama series: it was a scene where one of the main actors proposes in a restaurant (written as a curry house) and the waiter looks on indifferently.,u,0,0,1,0
+200,"Remember that the food might not be mentioned, so always check with the waiter or waitress.",m,0,1,0,0
+201,""" As she deliberated, then named her adjoining numbers and laid out her chips, Giles flagged down a waiter.",u,0,0,1,0
+202,When the waiter at his favourite restaurant suggests steak for lunch he thinks of a scene in one of his films where a man cuts a chunk out of his wife''s body and cooks and eats it.,u,0,0,1,0
+203,"This simple act prompted the waiter to engage in a rant, directed to me, about how the cash should be used to settle part of the bill as he has to wait a month for cleared funds from the credit card company.",m,0,1,0,0
+204,"Such, at least, was the case with me -- at least the publican thought so -- for -- what do you think? -- he devised a plan to bring my entertainment to an end abruptly, and the plan was, he told the waiter to throw a wet towel at me, which, of course, the waiter did, as he was told, and I received the wet towel, full force, in the face, which staggered me, no doubt, and had the desired effect of putting an end to me giving any more entertainments in his house.",u,0,0,1,0
+205,The only traditional part ofour cruises is ''Traditional Fixed Dining'' for passengers who enjoy eating at the same time andtable with the samepeople and waiter each night.,u,0,0,1,0
+206,"The waiter explains that the meatballs are bull''s testicles, and when the bull loses the bullfight, the bull is brought to the restaurant, and this beautiful dish is made.",u,0,0,1,0
+207,"Formerly worked for the family property development business, as an importer of pop music in Bolivia, and as a removal man and waiter.",m,0,1,0,0
+208,Ichi is a timid waiter by day.,u,0,0,1,0

@@ -1,0 +1,64 @@
+Profession,ClosestMatch,M,N,SD
+dance instructor,dance instructors,0.7,142,0.15
+dentist,dentists,0.38,139,0.15
+captain,NA,NA,NA,NA
+vet,vets,0.5,143,0.14
+landowner,NA,NA,NA,NA
+employer,bosses,0.37,142,0.13
+monarch,NA,NA,NA,NA
+factory manager,factory managers,0.28,139,0.13
+doctor,medical doctors,0.4,140,0.13
+referee,NA,NA,NA,NA
+director,film directors,0.31,139,0.13
+shop manager,NA,NA,NA,NA
+judge,judges,0.34,141,0.16
+bank manager,bankers,0.32,140,0.15
+surgeon,surgeons,0.33,141,0.13
+officer,police officers,0.36,140,0.13
+chef,chefs,0.37,140,0.14
+cook,cooks,0.5,144,0.16
+conductor,orchestra conductors,0.31,144,0.17
+pilot,pilots,0.24,141,0.14
+restaurant owner,NA,NA,NA,NA
+publisher,publishers,0.47,138,0.15
+professor,professors,0.38,142,0.13
+parent,parents,0.52,140,0.07
+senior stylist,NA,NA,NA,NA
+coach,sports coachs,0.33,141,0.14
+teacher,primary school teachers,0.75,142,0.13
+colonel,colonels,0.23,139,0.16
+architect,architects,0.36,142,0.14
+engineer,engineers,0.24,140,0.13
+boss,bosses,0.37,142,0.13
+general,generals,0.25,141,0.16
+dancer,dancers,0.65,142,0.14
+assistant,assistants,0.65,137,0.13
+sailor,sailors,0.27,142,0.14
+veterinary assistant,NA,NA,NA,NA
+labourer,NA,NA,NA,NA
+employee,workers,0.42,138,0.14
+servant,NA,NA,NA,NA
+worker,workers,0.42,138,0.14
+nurse,nurses,0.74,140,0.12
+footballer,football players,0.21,141,0.14
+actor,NA,NA,NA,NA
+cashier,cashiers,0.59,141,0.14
+law clerk,law clerks,0.41,141,0.14
+bank clerk,bank clerks,0.43,136,0.15
+patient,patients,0.52,140,0.09
+cadet,NA,NA,NA,NA
+kitchen porter,porters,0.27,138,0.15
+musician,musicians,0.47,138,0.11
+flight attendant,flight attendants,0.71,140,0.15
+waiter,waiter,0.45,139,0.19
+proofreader,proofreader,0.53,141,0.12
+student,students,0.55,140,0.1
+child,children,0.51,141,0.09
+junior stylist,NA,NA,NA,NA
+athlete,professional athletes,0.42,143,0.11
+pupil,students,0.55,140,0.1
+soldier,soldiers,0.22,142,0.13
+builder,construction workers,0.19,142,0.14
+mechanic,mechanics,0.2,137,0.12
+secretary,secretaries,0.75,141,0.14
+deputy,NA,NA,NA,NA
